@@ -19,12 +19,14 @@ std::vector<uint8_t> preprocessInput(const std::vector<uint8_t> &inVec)
 
     // Ignore all Whitspace
     std::vector<uint8_t> data(maxDataLength);
-    for(size_t idxNew = 0, idxOld = startIndex; idxOld < maxDataLength + startIndex; ++idxOld) {
+    size_t idxNew = 0;
+    for(size_t idxOld = startIndex; idxOld < maxDataLength + startIndex; ++idxOld) {
         if(!std::isspace(inVec[idxOld])) {
             data[idxNew++] = inVec[idxOld];
         }
     }
 
+    data.resize(idxNew);
     return data;
 }
 
@@ -54,6 +56,7 @@ std::vector<uint8_t> ascii85_decode(const std::vector<uint8_t> &inVec)
 
         // Check for 'z' rule first
         if(data[dataIdx] == static_cast<uint8_t>('z')) {
+            dataIdx += 1;
             value = 0;
             chunk_length = 5;
         // Chunk is long enough, we do not need padding
