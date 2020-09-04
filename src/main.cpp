@@ -1,21 +1,27 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 #include "ascii85.h"
 
 int main(int argc, char **argv)
 {
-    std::string string1("abcde");
-    std::string string2("abcdefghijkl");
+    // Read file into filestream
+    std::stringstream fileStream;
+    std::ifstream fileLayer1("data/layer1.txt");
+    fileStream << fileLayer1.rdbuf();
+    fileLayer1.close();
 
-    auto payload1 = std::vector<uint8_t>(string1.begin(), string1.end());
-    auto payload2 = std::vector<uint8_t>(string2.begin(), string2.end());
+    // Convert filestream to string
+    std::string encoded_layer1 = fileStream.str();
 
-    auto encoded1 = ascii85_encode(payload1);
-    auto encoded2 = ascii85_encode(payload2);
+    // decode layer 1 string
+    std::vector<uint8_t> decoded_layer1 = ascii85_decode(std::vector<uint8_t>(encoded_layer1.begin(),
+                                                                              encoded_layer1.end()));
 
-    std::cout << std::string(encoded1.begin(), encoded1.end()) << std::endl;
-    std::cout << std::string(encoded2.begin(), encoded2.end()) << std::endl;
+    // print decoded layer 1
+    std::cout << std::string(decoded_layer1.begin(), decoded_layer1.end()) << std::endl;
 
     return 0;
 }

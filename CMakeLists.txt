@@ -74,3 +74,13 @@ add_executable(TomsDataOnionTest
 )
 target_link_libraries(TomsDataOnionTest gtest_main)
 add_test(NAME TomsDataOnionTest_test COMMAND TomsDataOnionTest)
+
+##############
+#    Data    #
+##############
+add_custom_command(
+        TARGET TomsDataOnion POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/data/
+                ${CMAKE_CURRENT_BINARY_DIR}/data/
+)
