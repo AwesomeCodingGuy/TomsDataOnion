@@ -1,7 +1,10 @@
-﻿# CMakeList.txt: CMake-Projekt für "TomsDataOnion".
+﻿# CMakeList.txt: CMake-Projekt for "TomsDataOnion".
 cmake_minimum_required (VERSION 3.8)
 
 project ("TomsDataOnion")
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ##############
 # googletest #
@@ -71,3 +74,13 @@ add_executable(TomsDataOnionTest
 )
 target_link_libraries(TomsDataOnionTest gtest_main)
 add_test(NAME TomsDataOnionTest_test COMMAND TomsDataOnionTest)
+
+##############
+#    Data    #
+##############
+add_custom_command(
+        TARGET TomsDataOnion POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/data/
+                ${CMAKE_CURRENT_BINARY_DIR}/data/
+)
