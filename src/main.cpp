@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
     // Read file into filestream
     std::stringstream fileStream;
-    std::ifstream fileLayer1("data/layer1.txt");
+    std::ifstream fileLayer1("data/layer1_payload.txt");
     fileStream << fileLayer1.rdbuf();
     fileLayer1.close();
 
