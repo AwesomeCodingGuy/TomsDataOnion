@@ -10,10 +10,10 @@ int main(int argc, char **argv)
 {
     int layer = 2;
 
-    if(layer == 1) {
+    if(layer == 0) {
         // Read file into filestream
         std::stringstream fileStream;
-        std::ifstream fileLayer1("data/layer1_payload.txt");
+        std::ifstream fileLayer1("data/layer0_payload.txt");
         fileStream << fileLayer1.rdbuf();
         fileLayer1.close();
 
@@ -26,10 +26,10 @@ int main(int argc, char **argv)
 
         // print decoded layer 1
         std::cout << std::string(decoded_layer1.begin(), decoded_layer1.end()) << std::endl;
-    } else if(layer == 2) {
+    } else if(layer == 1) {
         // Read file into filestream
         std::stringstream fileStream;
-        std::ifstream fileLayer1("data/layer2_payload.txt");
+        std::ifstream fileLayer1("data/layer1_payload.txt");
         fileStream << fileLayer1.rdbuf();
         fileLayer1.close();
 
@@ -45,6 +45,8 @@ int main(int argc, char **argv)
 
         // print decoded layer 1
         std::cout << std::string(decoded_layer2.begin(), decoded_layer2.end()) << std::endl;
+    } else if(layer == 2) {
+
     }
 
     return 0;
