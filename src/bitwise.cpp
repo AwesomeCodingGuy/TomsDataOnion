@@ -23,12 +23,12 @@ uint8_t rotateRight8(uint8_t value, uint8_t n)
 
 uint8_t rotateLeft8(uint8_t value, uint8_t n)
 {
-    return (x << n) | (x >> (-n & 7));
+    return (value << n) | (value >> (-n & 7));
 }
 
 uint8_t rotateRight8(uint8_t value, uint8_t n)
 {
-    return (x >> n) | (x << (-n & 7));
+    return (value >> n) | (value << (-n & 7));
 }
 
 #endif // _MSC_VER
@@ -38,26 +38,16 @@ uint8_t flipEverySecondBit8(uint8_t val)
     return (val ^ 0b01010101);
 }
 
-std::vector<uint8_t> flipEverySecondBitInPlace(std::vector<uint8_t> &inVec)
+std::vector<uint8_t> bitwise_decode(const std::vector<uint8_t> &inVec)
 {
-    // flip every second bit in every byte
-    std::transform(inVec.begin(), inVec.end(), inVec.begin(), flipEverySecondBit8);
+    // Copy input data.
+    std::vector<uint8_t> data(inVec);
 
-    return inVec;
-}
+    // flip every second bit
+    std::transform(data.begin(), data.end(), data.begin(), flipEverySecondBit8);
 
-std::vector<uint8_t> rotateRightEveryByteInPlace(std::vector<uint8_t> &inVec)
-{
-    // flip every second bit in every byte
-    std::transform(inVec.begin(), inVec.end(), inVec.begin(), [](uint8_t val) { return rotateRight8(val, 1); });
+    // rotate bytes right
+    std::transform(data.begin(), data.end(), data.begin(), [](uint8_t val) { return rotateRight8(val, 1); });
 
-    return inVec;
-}
-
-std::vector<uint8_t> bitwise_decode(std::vector<uint8_t> inVec)
-{
-    flipEverySecondBitInPlace(inVec);
-    rotateRightEveryByteInPlace(inVec);
-
-    return inVec;
+    return data;
 }
