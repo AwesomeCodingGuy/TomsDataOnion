@@ -1,6 +1,9 @@
 #include "bitwise.h"
 
+#include <string>
+#include <vector>
 #include <algorithm>
+#include <iterator>
 
 // Based on the blog post
 // https://blog.regehr.org/archives/1063
@@ -105,4 +108,54 @@ uint64_t dataShift(const std::vector<uint8_t> &values) {
     }
 
     return value;
+}
+
+std::vector<uint8_t> xor_decode(const std::vector<uint8_t> &inVec)
+{
+    // output data container
+    std::vector<uint8_t> data(inVec.size());
+
+    // initialize key
+    uint8_t key[32] = {0};
+
+    // Init key with the first 15 known values
+    std::string guessed_beginning = "==[ Layer 4/6: ";
+    for(size_t i = 0; i < guessed_beginning.length(); ++i) {
+        key[i] = inVec[i] ^ guessed_beginning[i];
+    }
+
+    // Run first round of encryption to preprocess data for second guessing.
+    for(size_t idx = 0; idx < inVec.size(); ++idx) {
+        data[idx] = inVec[idx] ^ key[idx % 32];
+    }
+
+    // We know that the decoded data will probably contain the following string.
+    // "==[ Payload ]==============================================="
+    // We search this string in the decoded data from first run. When looking at the data
+    // we can figure out following bytes that will be the start of the Payload string.
+    // If we can find the index of that string we can use that to improve our guess for the key.
+    std::vector<uint8_t> substring({ 0x3d, 0x3d, 0xc5, 0x85,
+                                     0x49, 0x54, 0xef, 0x57});
+    auto idxItr = std::search(data.begin(), data.end(), substring.begin(), substring.end());
+
+    // assure that the substring was found
+    if(idxItr == data.end()) {
+        return std::vector<uint8_t>();
+    }
+
+    // calculate the index of the iterator position for the starting position in key
+    size_t idx = std::distance(data.begin(), idxItr);
+
+    // Improve the guess - 32 cahracters are sufficient
+    std::string payloadStr = "==[ Payload ]===================";
+    for(int i = 0; i < 32; ++i) {
+        key[(idx + i) % 32] = inVec[idx + i] ^ payloadStr[i];
+    }
+
+    // Use the guessed key to decode the rest
+    for(size_t idx = 0; idx < inVec.size(); ++idx) {
+        data[idx] = inVec[idx] ^ key[idx % 32];
+    }
+
+    return data;
 }

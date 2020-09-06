@@ -15,5 +15,7 @@ std::vector<uint8_t> parity_decode(const std::vector<uint8_t> &inVec);
 
 uint64_t dataShift(const std::vector<uint8_t> &values);
 
+std::vector<uint8_t> xor_decode(const std::vector<uint8_t> &inVec);
+
 
 #endif // TOMSDATAONION_BITWISE_H
