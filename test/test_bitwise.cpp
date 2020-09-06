@@ -36,3 +36,30 @@ TEST(BITWISE, bitwise_decode)
     EXPECT_EQ(result[0], test_result[0]);
     EXPECT_EQ(result[1], test_result[1]);
 }
+
+TEST(BITWISE, bitCount8)
+{
+    EXPECT_EQ(bitCount8(0b11111111), 8);
+    EXPECT_EQ(bitCount8(0b11111110), 7);
+    EXPECT_EQ(bitCount8(0b11111100), 6);
+    EXPECT_EQ(bitCount8(0b11111000), 5);
+    EXPECT_EQ(bitCount8(0b11110000), 4);
+    EXPECT_EQ(bitCount8(0b11100000), 3);
+    EXPECT_EQ(bitCount8(0b11000000), 2);
+    EXPECT_EQ(bitCount8(0b10000000), 1);
+    EXPECT_EQ(bitCount8(0b00000000), 0);
+}
+
+
+
+TEST(ASCII85, dataShift)
+{
+    std::vector<uint8_t> values{0b10000010, 0b10000010, 0b10000010, 0b10000010,
+                                0b10000010, 0b10000010, 0b10000010, 0b10000010};
+
+    uint64_t val = dataShift(values);
+
+    uint64_t test_val = 0b00000000'10000011'00000110'00001100'00011000'00110000'01100000'11000001;
+
+    EXPECT_EQ(val, test_val);
+}
