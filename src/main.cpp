@@ -64,8 +64,11 @@ int main(int argc, char **argv)
         // decode layer 0 string
         std::vector<uint8_t> decoded_layer0 = ascii85_decode(std::vector<uint8_t>(encoded_layer0.begin(),
                                                                                   encoded_layer0.end()));
+        // decode layer 3
+        std::vector<uint8_t> decoded_laye3 = xor_decode(decoded_layer0);
 
-
+        // print decoded layer 3
+        std::cout << std::string(decoded_laye3.begin(), decoded_laye3.end()) << std::endl;
     }
 
     return 0;
