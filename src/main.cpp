@@ -2,9 +2,11 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 #include "ascii85.h"
 #include "bitwise.h"
+#include "network.h"
 
 std::string readPayloadFromFile(std::string fileName)
 {
@@ -19,7 +21,7 @@ std::string readPayloadFromFile(std::string fileName)
 
 int main(int argc, char **argv)
 {
-    int layer = 3;
+    int layer = 4;
 
     if(layer == 0) {
         // Get encoded payload from file
@@ -69,7 +71,33 @@ int main(int argc, char **argv)
 
         // print decoded layer 3
         std::cout << std::string(decoded_laye3.begin(), decoded_laye3.end()) << std::endl;
+    } else if(layer == 4) {
+        // Get encoded payload from file
+        std::string encoded_layer0 = readPayloadFromFile("data/layer4_payload.txt");
+
+        // decode layer 0 string
+        std::vector<uint8_t> decoded_layer0 = ascii85_decode(std::vector<uint8_t>(encoded_layer0.begin(),
+                                                                                  encoded_layer0.end()));
+        // decode layer 3
+        std::vector<uint8_t> decoded_laye3 = network_decode(decoded_layer0);
+
+        // print decoded layer 3
+        std::cout << std::string(decoded_laye3.begin(), decoded_laye3.end()) << std::endl;
+    } else if(layer == 5) {
+        // Get encoded payload from file
+        std::string encoded_layer0 = readPayloadFromFile("data/layer4_payload.txt");
+
+        // decode layer 0 string
+        std::vector<uint8_t> decoded_layer0 = ascii85_decode(std::vector<uint8_t>(encoded_layer0.begin(),
+                                                                                  encoded_layer0.end()));
+        // decode layer 3
+        std::vector<uint8_t> decoded_laye3 = network_decode(decoded_layer0);
+
+        // print decoded layer 3
+        std::cout << std::string(decoded_laye3.begin(), decoded_laye3.end()) << std::endl;
     }
 
     return 0;
 }
+
+

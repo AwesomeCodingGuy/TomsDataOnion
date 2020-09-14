@@ -49,7 +49,8 @@ endif()
 # project source files
 set(source_files
     "src/ascii85.cpp"
- "src/bitwise.cpp")
+    "src/bitwise.cpp"
+    "src/network.cpp")
 
 # project executable
 add_executable(TomsDataOnion 
@@ -64,7 +65,8 @@ add_executable(TomsDataOnion
 # project source files
 set(test_files
     "test/test_ascii85.cpp"
- "test/test_bitwise.cpp")
+    "test/test_bitwise.cpp"
+    "test/test_network.cpp")
 
 # test executable
 add_executable(TomsDataOnionTest 
